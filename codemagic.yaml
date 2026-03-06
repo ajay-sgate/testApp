@@ -17,12 +17,22 @@ workflows:
           pod install --legacy-peer-deps
           cd ..
 
+      - name: Show iOS files (debug)
+        script: |
+          ls ios
+
       - name: Build iOS app
         script: |
           cd ios
+          WORKSPACE=$(ls *.xcworkspace | head -n 1)
+          SCHEME=$(xcodebuild -list -workspace $WORKSPACE | grep -A 1 "Schemes:" | tail -n 1 | xargs)
+
+          echo "Workspace: $WORKSPACE"
+          echo "Scheme: $SCHEME"
+
           xcodebuild \
-          -workspace *.xcworkspace \
-          -scheme $(xcodebuild -list | grep -A 1 "Schemes:" | tail -n 1 | xargs) \
-          -sdk iphoneos \
-          -configuration Release \
-          CODE_SIGNING_ALLOWED=NO
+            -workspace "$WORKSPACE" \
+            -scheme "$SCHEME" \
+            -sdk iphoneos \
+            -configuration Release \
+            CODE_SIGNING_ALLOWED=NO
