@@ -38,5 +38,6 @@ workflows:
             -configuration Release \
             CODE_SIGNING_ALLOWED=NO
 
-    artifacts:
-      - ios/build/ipa/*.ipa
+  artifacts:
+    - build/ios/ipa/*.ipa
+    - /tmp/xcodebuild_logs/*.log
