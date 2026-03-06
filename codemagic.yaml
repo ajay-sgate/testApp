@@ -24,8 +24,8 @@ workflows:
       - name: Build iOS app
         script: |
           cd ios
-          WORKSPACE=$(ls *.xcworkspace | head -n 1)
-          SCHEME=$(xcodebuild -list -workspace $WORKSPACE | grep -A 1 "Schemes:" | tail -n 1 | xargs)
+          WORKSPACE=$(find . -maxdepth 1 -type d -name "*.xcworkspace" | head -n 1 | sed 's|./||')
+          SCHEME=$(xcodebuild -list -workspace "$WORKSPACE" | grep -A 1 "Schemes:" | tail -n 1 | xargs)
 
           echo "Workspace: $WORKSPACE"
           echo "Scheme: $SCHEME"
