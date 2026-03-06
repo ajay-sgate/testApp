@@ -11,10 +11,11 @@ workflows:
         script: |
           npm install --legacy-peer-deps
 
-      - name: Install CocoaPods
+     - name: Install CocoaPods
         script: |
           cd ios
-          pod install --legacy-peer-deps
+          pod install --repo-update
+          ls Pods
           cd ..
 
       - name: Show iOS files (debug)
