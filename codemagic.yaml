@@ -2,13 +2,12 @@ workflows:
   react-native-ios:
     name: React Native iOS Build
     max_build_duration: 60
-    instance_type: mac_mini_m1
 
     environment:
       node: 18
 
     scripts:
-      - name: Install dependencies
+      - name: Install npm dependencies
         script: |
           npm install --legacy-peer-deps
 
@@ -18,14 +17,12 @@ workflows:
           pod install --legacy-peer-deps
           cd ..
 
-      - name: Build iOS
+      - name: Build iOS app
         script: |
-          xcodebuild build \
-          -workspace ios/*.xcworkspace \
-          -scheme $(xcodebuild -list -workspace ios/*.xcworkspace | grep -A 1 "Schemes:" | tail -n 1 | xargs) \
+          cd ios
+          xcodebuild \
+          -workspace *.xcworkspace \
+          -scheme $(xcodebuild -list | grep -A 1 "Schemes:" | tail -n 1 | xargs) \
           -sdk iphoneos \
           -configuration Release \
           CODE_SIGNING_ALLOWED=NO
-
-    artifacts:
-      - build/ios/iphoneos/*.app
